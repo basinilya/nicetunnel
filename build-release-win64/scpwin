@@ -1,0 +1,30 @@
+#!/bin/bash
+
+s=/usr/x86_64-w64-mingw32/bin
+
+binaries=(
+ ./pkg/usr/x86_64-w64-mingw32/bin/nicetunnel.exe
+ $s/libgio-2.0-0.dll
+ $s/libglib-2.0-0.dll
+ $s/libgobject-2.0-0.dll
+ $s/libnice-10.dll
+ $s/libffi-6.dll
+ $s/libgmodule-2.0-0.dll
+ $s/libgnutls-30.dll
+ $s/libintl-8.dll
+ $s/libpcre-1.dll
+ $s/libssp-0.dll
+ $s/zlib1.dll
+ $s/libiconv-2.dll
+ $s/libgcc_s_seh-1.dll
+ $s/libgmp-10.dll
+ $s/libhogweed-6.dll
+ $s/libnettle-8.dll
+ $s/libp11-kit-0.dll
+ $s/libwinpthread-1.dll
+ $s/libtasn1-6.dll
+ $s/libunistring-2.dll
+)
+
+make install DESTDIR=`pwd`/pkg
+scp "${binaries[@]}" basin@basin:/cygdrive/c/progs/nicetunnel/bin/

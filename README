@@ -1,0 +1,54 @@
+<!-- vim: syntax=Markdown -->
+### NiceTunnel
+
+A network proxy (client & server) doing NAT traversal for programs that don't support it.
+
+This project's purpose is educational. For the real thing use ZeroTier, ~~Tunngle~~, Evolve, Hamachi, or Radmin VPN.
+
+In the modern Internet the devices usually can't easily communicate with each other without some public server in between. The main reason is the exhaust of IPv4 addresses and NAT which is used by ISPs as a workaround.
+
+P2P file sharing and network clients, some Instant Messengers, VoIP, and Web Conferencing clients learned to punch holes in NATs. Through such holes devices can connect to each other taking the shortest route without any detours like public, often distant servers. Yet, at the very beginning the public server still relays a small amount of data containing the connect request and some details about the peers which is needed in order to connect.
+
+There is a lot of network programs that don't support NAT traversal. One example in OpenVPN. At least one of the OpenVPN peers (the server) must be reachable from the other by simply sending UDP or TCP traffic to a fixed internet address. If both peers are behind NAT the connection can't be established.
+
+In such situation NiceTunnel can help. It's a proxy that you run on both devices. On the client side NiceTunnel listens on a local address and you configure this address as the server address in the incapable program client. When it connects to the local NiceTunnel a connect request is sent to NiceTunnel running on the server; then both instances of NiceTunnel perform NAT traversal and the payload from the incapable client starts being relayed to to the incapable server. Any response from the incapable server is relayed back to the incapable client.
+
+NiceTunnel uses the standard NAT traversal protocol: ICE.
+
+NiceTunnel is a console program. It is based on GLib-2.0 and Libnice - the ICE protocol implementation for GLib.
+
+The program was tested on ArchLinux and Windows 7 (x86_64-w64-mingw32)
+
+### What is supported
+
+- Sending a connect request via a TCP connection (possibly, a port forwarded with SSH)
+- Relaying UDP payload
+- SOME IPv6
+
+### What is NOT supported
+
+- Sending a connect request via an instant messenger like IRC
+- The Reliable mode of Libnice and relaying TCP payload
+- Pooling the established ICE connections to avoid delays after an incapable program connects
+- Stopping ICE and letting the programs talk directly for better performance
+
+### Forwarding the Signaling Port (Linux)
+
+On a server with public ip do:
+
+    # assuming that 'external' was made the default zone because that's what needed to forward packets
+    SIGNAL_SERVER=10.8.1.32
+    SIGNAL_PORT=1500
+    firewall-cmd --zone=external --add-forward-port=port=${SIGNAL_PORT:?}:proto=tcp:toport=${SIGNAL_PORT:?}:toaddr=${SIGNAL_SERVER:?} --permanent
+    firewall-cmd --reload
+
+### Example
+
+    ## Get help
+    nicetunnel --help
+    #
+    ## Send UDP to inetd's echo-dgram service
+    # server:
+    nicetunnel --peer-udp 127.0.0.1:7 --stun-addr stun.acme.com --bind-sdp '[::]:1500'
+    # client:
+    nicetunnel --connect-sdp myserver.hoster.com:1500 --bind-udp "127.0.0.1:7777" --stun-addr stun.acme.com

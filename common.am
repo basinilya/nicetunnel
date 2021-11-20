@@ -1,0 +1,30 @@
+MY_NULL =
+
+##AM_CPPFLAGS =
+##AM_CFLAGS =
+
+_RPAR = )
+_LPAR = (
+
+CLEANFILES =
+
+### This target is for IDEs
+##all-prelink: all-am $(bin_PROGRAMS:%=.libs/lt-%) $(check_PROGRAMS:%=.libs/lt-%)
+
+##.libs/lt-% : %
+##	$(top_builddir)/libtool --mode=execute echo $<
+##	touch $@
+
+##check-code-coverage-local: all-am
+
+NICETUNNELCOMMON_LIBS = \
+	$(MY_NULL)
+
+##	$(CODE_COVERAGE_LIBS)
+
+if NICETUNNEL_WIN32
+.rc.o:
+	$(WINDRES) $^ -o $@
+%.o : %.rc
+	$(WINDRES) $^ -o $@
+endif
