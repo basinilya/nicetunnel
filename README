@@ -36,7 +36,7 @@ The program was tested on ArchLinux and Windows 7 (x86_64-w64-mingw32)
 
 On a server with public ip do:
 
-    # assuming that 'external' was made the default zone because that's what needed to forward packets
+    # assuming that 10.8.1.0/24 and eth0 were moved to zone 'external' because that's what needed to forward packets
     SIGNAL_SERVER=10.8.1.32
     SIGNAL_PORT=1500
     firewall-cmd --zone=external --add-forward-port=port=${SIGNAL_PORT:?}:proto=tcp:toport=${SIGNAL_PORT:?}:toaddr=${SIGNAL_SERVER:?} --permanent
