@@ -15,7 +15,7 @@ In such situation NiceTunnel can help. It's a proxy that you run on both devices
 
 NiceTunnel uses the standard NAT traversal protocol: ICE.
 
-NiceTunnel is a console program. It is based on GLib-2.0 and Libnice - the ICE protocol implementation for GLib.
+NiceTunnel is a console program. It is based on GLib-2.0 and Libnice - the ICE protocol implementation based on GLib.
 
 The program was tested on ArchLinux and Windows 7 (x86_64-w64-mingw32)
 
@@ -34,7 +34,7 @@ The program was tested on ArchLinux and Windows 7 (x86_64-w64-mingw32)
 
 ### Forwarding the Signaling Port (Linux)
 
-On a server with public ip do:
+On a server with public IP do:
 
     # assuming that 10.8.1.0/24 and eth0 were moved to zone 'external' because that's what needed to forward packets
     SIGNAL_SERVER=10.8.1.32
